@@ -48,6 +48,18 @@ rm -rf ~/.config/nvim/.git
 nvim
 ```
 
+7- btop
+
+```
+sudo pacman -S btop
+btop
+```
+
+if you get locale error, try `export LANG=en_US.utf8
+btop
+`
+
+
 notes -
 
 if some package installation fails, try sudo pacman -Syyu
