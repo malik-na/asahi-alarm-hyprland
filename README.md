@@ -33,9 +33,21 @@ cd yay
 makepkg -si
 ```
 
-5- Install Flatpak
+5- Install Flatpak for downloading utilities like Brave, Obsidian etc.
 
 ```
 sudo pacman -S flatpak
 flatpak install flathub md.obsidian.Obsidian
 ```
+
+6- Lazyvim
+
+```
+git clone https://github.com/LazyVim/starter ~/.config/nvim
+rm -rf ~/.config/nvim/.git
+nvim
+```
+
+notes -
+
+if some package installation fails, try sudo pacman -Syyu
