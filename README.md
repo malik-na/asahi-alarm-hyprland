@@ -55,9 +55,13 @@ sudo pacman -S btop
 btop
 ```
 
-if you get locale error, try `export LANG=en_US.utf8
-btop
-`
+if you get locale error, add this to .bashrc or .zshrc
+
+```
+export LANG=en_US.utf8
+export LC_ALL=en_US.utf8
+
+```
 
 
 notes -
