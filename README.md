@@ -63,3 +63,103 @@ btop
 notes -
 
 if some package installation fails, try sudo pacman -Syyu
+
+```
+#!/bin/bash
+# Omarchy-style environment setup for Asahi Alarm (ARM)
+# Tracks installed, skipped, and failed packages
+
+set -e
+
+# Arrays for tracking results
+installed=()
+already=()
+failed=()
+
+# Function: check if package is installed (pacman or flatpak)
+is_installed() {
+    if pacman -Qi "$1" &>/dev/null; then
+        return 0
+    elif flatpak list --app | grep -q "$1"; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# Function: install pacman package
+install_pacman() {
+    local pkg=$1
+    if is_installed "$pkg"; then
+        already+=("$pkg")
+    else
+        if sudo pacman -S --noconfirm --needed "$pkg"; then
+            installed+=("$pkg")
+        else
+            failed+=("$pkg")
+        fi
+    fi
+}
+
+# Function: install yay (AUR) package
+install_yay() {
+    local pkg=$1
+    if is_installed "$pkg"; then
+        already+=("$pkg")
+    else
+        if yay -S --noconfirm --needed "$pkg"; then
+            installed+=("$pkg")
+        else
+            failed+=("$pkg")
+        fi
+    fi
+}
+
+# Function: install flatpak package
+install_flatpak() {
+    local pkg=$1
+    if is_installed "$pkg"; then
+        already+=("$pkg")
+    else
+        if flatpak install -y flathub "$pkg"; then
+            installed+=("$pkg")
+        else
+            failed+=("$pkg")
+        fi
+    fi
+}
+
+echo ">>> Updating system..."
+sudo pacman -Syu --noconfirm
+
+echo ">>> Installing pacman packages..."
+for pkg in neovim alacritty chromium libreoffice-fresh evince \
+           fzf zoxide ripgrep lazygit btop steam retroarch \
+           helix docker tailscale code-oss; do
+    install_pacman "$pkg"
+done
+
+echo ">>> Installing AUR packages (yay)..."
+for pkg in typora zoom 1password spotify cursor zed sublime-text-4 \
+           lazydocker prismlauncher dropbox vscodium-bin-arm; do
+    install_yay "$pkg"
+done
+
+echo ">>> Installing Flatpak apps..."
+for pkg in md.obsidian.Obsidian org.localsend.localsend_app \
+           com.github.PintaProject.Pinta com.discordapp.Discord; do
+    install_flatpak "$pkg"
+done
+
+echo ">>> Enabling services..."
+sudo systemctl enable --now docker || true
+sudo systemctl enable --now tailscaled || true
+
+echo
+echo "================ Installation Summary ================"
+echo "✅ Installed: ${installed[*]}"
+echo "📦 Already installed: ${already[*]}"
+echo "❌ Failed: ${failed[*]}"
+echo "======================================================"
+
+```
