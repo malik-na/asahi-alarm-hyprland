@@ -1,4 +1,4 @@
-# asahi-alarm-hyprland
+# asahi-alarm-hyprland on MacBook
 
 ## steps after installing asahi alarm hyprland
 
