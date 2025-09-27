@@ -5,10 +5,7 @@
 1- Connect Wi-fi -
 
 ```
-nmcli connection add type wifi ifname wlan0 con-name Airtel_Naeem_Malik ssid "Airtel_Naeem Malik"
-nmcli connection modify Airtel_Naeem_Malik wifi-sec.key-mgmt wpa-psk
-nmcli connection modify Airtel_Naeem_Malik wifi-sec.psk "Naeem@0447"
-nmcli connection up Airtel_Naeem_Malik
+nmtui
 ```
 
 2- Keyboard backlight -
